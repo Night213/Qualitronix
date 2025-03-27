@@ -1,0 +1,46 @@
+.container {
+  height: 100vh;
+}
+.panel-background {
+  height: 100vh;
+  background: linear-gradient(to bottom right, #eda10d, #009669);
+}
+
+.slogan {
+  background: Linear-gradient(to right, #fca326, #f9f9f9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+body {
+  background-image: url(https://imgur.com/XJUGC3H.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+a {
+  text-decoration: none;
+}
+
+.BG-Gradient {
+  background: linear-gradient(to top, #003021f0, #009669d0);
+}
+
+.Button-bg {
+  background-color: #007aff;
+}
+
+.title {
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
+}
+
+hr {
+  flex: 1;
+}
+
+.Gmail-bg {
+  background: linear-gradient(to bottom right, #2e856b, #2e856b, #ffca28);
+}
