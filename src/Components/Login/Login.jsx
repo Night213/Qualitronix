@@ -15,10 +15,10 @@ export default function Login() {
     setError("");
 
     try {
-      const response = await axios.post(
-        "http://ec2-13-48-37-38.eu-north-1.compute.amazonaws.com/auth/signin",
-        { email, password }
-      );
+      const response = await axios.post("http://localhost:3000/auth/signin", {
+        email,
+        password,
+      });
 
       localStorage.setItem("accessToken", response.data.accessToken);
       localStorage.setItem("refreshToken", response.data.refreshToken);

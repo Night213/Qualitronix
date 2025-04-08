@@ -8,14 +8,11 @@ export default function Subscription() {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get(
-          "http://ec2-13-48-37-38.eu-north-1.compute.amazonaws.com/user/profile",
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
+        const response = await axios.get("http://localhost:3000/user/profile", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
 
         const { username } = response.data.user;
 

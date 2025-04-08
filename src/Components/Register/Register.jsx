@@ -21,22 +21,19 @@ export default function Register() {
     }
 
     try {
-      const response = await fetch(
-        "http://ec2-13-48-37-38.eu-north-1.compute.amazonaws.com/auth/signUp",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username,
-            email,
-            password,
-            confirmPassword,
-            phone,
-          }),
-        }
-      );
+      const response = await fetch("http://localhost:3000/auth/signUp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+          confirmPassword,
+          phone,
+        }),
+      });
 
       if (response.ok) {
         const data = await response.json();

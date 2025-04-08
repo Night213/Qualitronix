@@ -23,7 +23,7 @@ export default function Details({ onClose, item, imageId }) {
       const fetchData = async () => {
         try {
           const response = await axios.get(
-            "http://ec2-13-48-37-38.eu-north-1.compute.amazonaws.com/detection/results",
+            "http://localhost:3000/detection/results",
             {
               headers: {
                 Authorization: `Bearer ${accessToken}`,

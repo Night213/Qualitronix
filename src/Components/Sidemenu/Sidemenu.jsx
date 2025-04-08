@@ -17,16 +17,13 @@ export default function Sidemenu() {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.get(
-        "http://ec2-13-48-37-38.eu-north-1.compute.amazonaws.com/auth/signOut",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            accesstoken: `${aT}`,
-            refreshtoken: refreshToken,
-          },
-        }
-      );
+      const response = await axios.get("http://localhost:3000/auth/signOut", {
+        headers: {
+          "Content-Type": "application/json",
+          accesstoken: `${aT}`,
+          refreshtoken: refreshToken,
+        },
+      });
 
       navigate("/Login");
 
