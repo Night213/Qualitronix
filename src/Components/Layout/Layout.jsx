@@ -12,7 +12,7 @@ export default function Layout() {
     const fetchUserProfile = async () => {
       try {
         const response = await axios.get(
-          "http://ec2-13-48-37-38.eu-north-1.compute.amazonaws.com/user/profile",
+          "http://13.48.37.38:3000/user/profile",
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
