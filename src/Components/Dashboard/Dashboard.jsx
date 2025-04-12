@@ -15,17 +15,36 @@ import {
 
 export default function Dashboard() {
   const [summary, setSummary] = useState(null);
+  const [dailyData, setDailyData] = useState([]); // State to store daily fault data
   const accessToken = localStorage.getItem("accessToken");
 
   useEffect(() => {
     axios
-      .get("http://13.48.37.38:3000/detection/summary", {
+      .get("http://13.48.37.38:3000/detection/Dashboard", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       })
       .then((response) => {
-        setSummary(response.data.summary);
+        const summaryData = response.data.summary;
+        if (summaryData) {
+          setSummary(summaryData);
+
+          if (
+            summaryData.weekly_summary &&
+            summaryData.weekly_summary.length > 0
+          ) {
+            const transformedData = summaryData.weekly_summary.map((entry) => ({
+              name: entry.name, // Corrected field from day -> name
+              faultRate: entry.faultRate,
+            }));
+            setDailyData(transformedData);
+          } else {
+            console.warn("Weekly summary is empty or missing");
+          }
+        } else {
+          console.error("Summary data is missing in the response");
+        }
       })
       .catch((error) => {
         console.error("Error fetching summary:", error);
@@ -43,11 +62,8 @@ export default function Dashboard() {
             <h3>Defects Percentage</h3>
             <div className="row">
               {summary.defect_percentages.map((defect, index) => (
-                <div className="col-6">
-                  <div
-                    key={index}
-                    className="defect-item bg-dark text-gold me-2 my-2 p-3 font-bold flex justify-between rounded-xl"
-                  >
+                <div className="col-6" key={index}>
+                  <div className="defect-item bg-dark text-gold me-2 my-2 p-3 font-bold flex justify-between rounded-xl">
                     <span className="text-start">{defect.name}</span>
                     <span className="text-end">{defect.percentage}%</span>
                   </div>
@@ -69,13 +85,13 @@ export default function Dashboard() {
           </div>
         </div>
 
+        {/* Line Chart for Daily Fault Detection */}
         <div className="col-6">
           <div className="charts">
-            {/* Line Chart for Daily Fault Detection */}
             <div className="chart-card">
               <h3>Daily Batch Fault Detection</h3>
               <div className="bgc w-fit pe-3 py-3 rounded-3xl">
-                <DailyFaultChart />
+                <DailyFaultChart data={dailyData} />
               </div>
             </div>
           </div>
@@ -86,15 +102,17 @@ export default function Dashboard() {
           <div className="recent-defects">
             <h3>Recent Defects</h3>
             <div className="bgc text-gold px-5 py-3 rounded-3xl">
-              {summary.recent_defects.map((pcb, index) => (
-                <div className="row">
+              {[...summary.recent_defects].reverse().map((pcb, index) => (
+                <div className="row" key={index}>
                   <div className="col-2 self-center text-5xl">
-                    <i class="fa-solid fa-microchip"></i>
+                    <i className="fa-solid fa-microchip"></i>
                   </div>
                   <div className="col-9 ms-auto">
-                    <div key={index} className="pcb-item">
-                      <span>{pcb.pcb_id}</span>
+                    <div className="pcb-item">
+                      <span className="font-bold">{pcb.pcb_id}</span>
                       <p>Defects: {pcb.defects.join(", ")}</p>
+                      {/* Uncomment below when timestamp becomes available */}
+                      {/* <p className="text-sm text-muted">Detected: {new Date(pcb.detected_at).toLocaleString()}</p> */}
                     </div>
                   </div>
                 </div>
@@ -127,24 +145,22 @@ const DefectivePieChart = ({ data }) => (
   </PieChart>
 );
 
-// Fake Data for Line Chart
-const dailyData = [
-  { name: "Sat", faultRate: 98 },
-  { name: "Sun", faultRate: 95 },
-  { name: "Mon", faultRate: 96 },
-  { name: "Tue", faultRate: 98 },
-  { name: "Wed", faultRate: 93 },
-  { name: "Thu", faultRate: 97 },
-  { name: "Fri", faultRate: 99 },
-];
-
-// Line Chart Component
-const DailyFaultChart = () => (
-  <LineChart width={600} height={250} data={dailyData}>
+// Line Chart Component for Daily Fault Detection (Fixed)
+const DailyFaultChart = ({ data }) => (
+  <LineChart width={600} height={250} data={data}>
     <CartesianGrid strokeDasharray="3 3" />
-    <XAxis dataKey="name" tick={{ fill: "#009669" }} />
+    <XAxis dataKey="name" tick={{ fill: "#009669", fontSize: 14 }} />
     <YAxis domain={[90, 100]} tick={{ fill: "#009669" }} />
-    <Tooltip />
-    <Line type="bump" dataKey="faultRate" stroke="#eda10d" strokeWidth={2} />
+    <Tooltip
+      labelFormatter={(label) => `Day: ${label}`}
+      formatter={(value) => [`${value}%`, "Fault Rate"]}
+    />
+    <Line
+      type="monotone"
+      dataKey="faultRate"
+      stroke="#eda10d"
+      strokeWidth={2}
+      dot={{ r: 4 }}
+    />
   </LineChart>
 );

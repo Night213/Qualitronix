@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import axios from "axios";
 import "./Upload.css";
 import { X } from "lucide-react";
@@ -46,6 +46,18 @@ export default function Upload({ onClose }) {
       );
 
       console.log("Upload response:", uploadResponse.data);
+
+      // ✅ Show success message
+      setMessage("Upload successful! Refreshing...");
+
+      // ✅ Save scroll position or tab
+      sessionStorage.setItem("scrollY", window.scrollY);
+
+      // ✅ Close modal after 3 seconds & reload page
+      setTimeout(() => {
+        onClose();
+        window.location.reload();
+      }, 3000);
     } catch (err) {
       setMessage("Upload failed. Please try again.");
       console.error("Upload error:", err);
@@ -53,6 +65,15 @@ export default function Upload({ onClose }) {
       setUploading(false);
     }
   };
+
+  // ✅ Restore scroll position (put this in your main page or tab component)
+  useEffect(() => {
+    const scrollY = sessionStorage.getItem("scrollY");
+    if (scrollY) {
+      window.scrollTo(0, parseInt(scrollY));
+      sessionStorage.removeItem("scrollY");
+    }
+  }, []);
 
   return (
     <div
