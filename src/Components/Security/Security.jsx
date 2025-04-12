@@ -48,7 +48,7 @@ export default function Security() {
 
     try {
       const response = await axios.patch(
-        "http://localhost:3000/user/updatePassword",
+        "http://13.48.37.38:3000/user/updatePassword",
         filteredData,
         {
           headers: {

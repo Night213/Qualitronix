@@ -35,7 +35,7 @@ export default function Upload({ onClose }) {
     try {
       console.log("Uploading files...");
       const uploadResponse = await axios.post(
-        "http://localhost:3000/detection/upload",
+        "http://13.48.37.38:3000/detection/upload",
         formData,
         {
           headers: {

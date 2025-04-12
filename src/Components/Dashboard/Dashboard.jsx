@@ -19,7 +19,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/detection/summary", {
+      .get("http://13.48.37.38:3000/detection/summary", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

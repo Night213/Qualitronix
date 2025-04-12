@@ -51,7 +51,7 @@ export default function UpdateProfile() {
 
     try {
       const response = await axios.put(
-        "http://localhost:3000/user/updateProfile",
+        "http://13.48.37.38:3000/user/updateProfile",
         filteredData,
         {
           headers: {

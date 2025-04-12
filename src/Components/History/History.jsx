@@ -14,7 +14,7 @@ export default function History() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/detection/results",
+          "http://13.48.37.38:3000/detection/results",
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,

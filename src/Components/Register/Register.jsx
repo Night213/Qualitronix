@@ -21,7 +21,7 @@ export default function Register() {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/auth/signUp", {
+      const response = await fetch("http://13.48.37.38:3000/auth/signUp", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

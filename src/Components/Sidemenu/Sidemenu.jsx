@@ -17,7 +17,7 @@ export default function Sidemenu() {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/auth/signOut", {
+      const response = await axios.get("http://13.48.37.38:3000/auth/signOut", {
         headers: {
           "Content-Type": "application/json",
           accesstoken: `${aT}`,
