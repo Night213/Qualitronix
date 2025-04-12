@@ -21,6 +21,7 @@ function App() {
     },
     { path: "/Login", element: <Login /> },
     { path: "/Register", element: <Register /> },
+    { path: "*", element: <Error404 /> },
     {
       path: "/",
       element: <Layout />,
@@ -33,7 +34,6 @@ function App() {
             </ProtectedRoute>
           ),
         },
-        { path: "*", element: <Error404 /> },
         {
           path: "/Dashboard",
           element: (
