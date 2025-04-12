@@ -8,6 +8,7 @@ import Subscription from "./Components/Subscription/Subscription";
 import History from "./Components/History/History";
 import Settings from "./Components/Settings/Settings";
 import ForgotPassword from "./Components/ForgotPassword/ForgotPassword";
+import ResetPassword from "./Components/ResetPassword/ResetPassword";
 import Error404 from "./Components/Error404/Error404";
 import UpdateProfile from "./Components/UpdateProfile/UpdateProfile";
 import Preferences from "./Components/Preferences/Preferences";
@@ -18,6 +19,10 @@ function App() {
     {
       path: "/ForgotPassword",
       element: <ForgotPassword />,
+    },
+    {
+      path: "/ResetPassword",
+      element: <ResetPassword />,
     },
     { path: "/Login", element: <Login /> },
     { path: "/Register", element: <Register /> },

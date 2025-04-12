@@ -1,33 +1,37 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios"; // ✅ Import axios
 
-import "./Login.css";
-
-export default function Login() {
+export default function ResetPassword() {
   const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(" ");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(""); // ✅ success message
+  const [loading, setLoading] = useState(false); // ✅ loading state
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setSuccess("");
+    setLoading(true); // ✅ start loading
 
     try {
-      const response = await axios.post("http://13.48.37.38:3000/auth/signin", {
-        email,
-        password,
-      });
-
-      localStorage.setItem("accessToken", response.data.accessToken);
-      localStorage.setItem("refreshToken", response.data.refreshToken);
-
-      console.log("Login Successful:", response.data);
-      navigate("/");
+      const response = await axios.put(
+        "http://13.48.37.38:3000/auth/resetPassword",
+        { email, otp, password, confirmPassword }
+      );
+      setSuccess("Password successfully reset!");
+      setTimeout(() => {
+        navigate("/Login");
+      }, 2000);
     } catch (err) {
-      setError(err.response?.data?.message || "Login Failed");
-      console.error("Login failed:", err);
+      setError(err.response?.data?.message || "Something went wrong");
+      console.error("Error:", err);
+    } finally {
+      setLoading(false); // ✅ end loading
     }
   };
 
@@ -37,7 +41,7 @@ export default function Login() {
         <div className="row">
           <div className="col-6 content-center">
             <div className="row col-7 m-auto BG-Gradient rounded-2xl center">
-              <div className="">
+              <div className="mt-3 ms-2">
                 <img
                   className="col-4 m-auto"
                   src="https://imgur.com/4YwzsaW.jpg"
@@ -53,25 +57,46 @@ export default function Login() {
                   />
                   <input
                     className="border-1 rounded-md border-white my-2 p-1"
+                    type="number"
+                    placeholder="One Time Pin"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                  />
+                  <input
+                    className="border-1 rounded-md border-white my-2 p-1"
                     type="password"
-                    placeholder="Password"
+                    placeholder="New Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <input
+                    className="border-1 rounded-md border-white my-2 p-1"
+                    type="password"
+                    placeholder="Confirm Password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                   />
 
                   <button
                     className="mt-2 Button-bg rounded-pill p-1 mb-2"
                     type="submit"
+                    disabled={loading}
                   >
-                    Login
+                    {loading ? "Submitting..." : "Submit"}
                   </button>
 
-                  <Link to="/ForgotPassword" className="text-center slogan">
-                    Forgot Password? Click Here
-                  </Link>
+                  {error && (
+                    <div className="text-red-600 text-sm mt-1">{error}</div>
+                  )}
+                  {success && (
+                    <div className="text-green-600 text-sm mt-1">{success}</div>
+                  )}
 
-                  {error && <div className="text-red-600 text-sm">{error}</div>}
+                  <Link to="/Login" className="text-center slogan">
+                    Remembered your Password? Click Here
+                  </Link>
                 </form>
+
                 <div className="title text-center mx-5">
                   <hr className="text-white" />
                   <div className="text-sm text-white font-light p-2">
@@ -80,6 +105,7 @@ export default function Login() {
                   <hr className="text-white" />
                 </div>
               </div>
+
               <div className="col-12">
                 <div className="Gmail-bg col-3 m-auto mb-1 mt-4 text-light font-light text-center border-white border-1 pt-1 pb-1 rounded-2xl">
                   <img
@@ -90,11 +116,13 @@ export default function Login() {
                   Gmail
                 </div>
               </div>
+
               <div className="text-light text-center border-1 w-auto px-4 rounded-md mt-5 mb-5 m-auto">
                 Don’t Have an Account?
                 <Link to="/Register">{" Register here"}</Link>
               </div>
             </div>
+
             <div className="col-8 mx-auto text-center text-light pt-7">
               Get the Application
               <div className="row mx-auto">
@@ -114,7 +142,8 @@ export default function Login() {
               </div>
             </div>
           </div>
-          <div className="col-6 panel-background ">
+
+          <div className="col-6 panel-background">
             <div className="images mb-28">
               <img
                 className="col-2 m-auto"
@@ -127,14 +156,17 @@ export default function Login() {
                 alt="Qualitronix"
               />
             </div>
+
             <div className="slogan col-6 text-center m-auto pb-36">
               <h2>Defect Zero, Quality Hero</h2>
               <hr />
             </div>
+
             <div className="slogan col-6 text-center m-auto pb-20">
               <h2>PCB Defect Detection</h2>
               <hr />
             </div>
+
             <div className="text-center">
               <Link
                 to="/About"
