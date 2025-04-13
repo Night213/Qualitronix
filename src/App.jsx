@@ -64,7 +64,7 @@ function App() {
           ),
         },
         {
-          path: "/Settings",
+          path: "/Settings/",
           element: (
             <ProtectedRoute>
               <Settings />

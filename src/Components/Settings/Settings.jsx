@@ -1,23 +1,49 @@
-import React, { useState } from "react";
-import { Link, Route, Routes } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import {
+  Link,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import "./Settings.css";
 import UpdateProfile from "../UpdateProfile/UpdateProfile";
 import Preferences from "../Preferences/Preferences";
 import Security from "../Security/Security";
 
 export default function Settings() {
-  const [activeButton, setActiveButton] = useState("Dashboard");
+  const [activeButton, setActiveButton] = useState("UpdateProfile");
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const path = location.pathname.split("/").pop();
+
+    // Redirect to Update-Profile if only /Settings is visited
+    if (path === "Settings") {
+      navigate("Update-Profile");
+    }
+
+    if (path === "Preferences") {
+      setActiveButton("Preferences");
+    } else if (path === "Security") {
+      setActiveButton("Security");
+    } else {
+      setActiveButton("UpdateProfile");
+    }
+  }, [location, navigate]);
 
   const handleButtonClick = (buttonName) => {
     setActiveButton(buttonName);
   };
+
   return (
     <>
       <div className="container-fluid m-10">
-        <div className="row ">
+        <div className="row">
           <div className="col-10 m-auto mt-5 bgi p-0 rounded-4xl">
             <div className="text-white bgf m-0 px-3">
-              <div className="">
+              <div>
                 <ul className="nav nav-underline pb-4 pt-3">
                   <li
                     className="nav-item"

@@ -1,7 +1,7 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Sidemenu.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Upload from "../Upload/Upload";
 
 export default function Sidemenu() {
@@ -10,28 +10,41 @@ export default function Sidemenu() {
   const aT = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const savedTab = localStorage.getItem("activeTab");
+    if (savedTab) {
+      setActiveButton(savedTab);
+    }
+
+    // Sync with current path in case of refresh without click
+    const path = location.pathname.split("/")[1];
+    if (path && !["", "Login"].includes(path)) {
+      setActiveButton(path === "Settings" ? "Setting" : path);
+      localStorage.setItem("activeTab", path === "Settings" ? "Setting" : path);
+    }
+  }, [location]);
 
   const handleButtonClick = (buttonName) => {
     setActiveButton(buttonName);
+    localStorage.setItem("activeTab", buttonName);
   };
 
   const handleLogout = async () => {
     try {
-      const response = await axios.get("http://13.48.37.38:3000/auth/signOut", {
+      await axios.get("http://13.48.37.38:3000/auth/signOut", {
         headers: {
           "Content-Type": "application/json",
           accesstoken: `${aT}`,
           refreshtoken: refreshToken,
         },
       });
-
-      navigate("/Login");
-
-      if (response.status === 200) {
-        localStorage.clear();
-      }
     } catch (error) {
       console.error("Logout error:", error.response?.data || error.message);
+    } finally {
+      localStorage.clear();
+      navigate("/Login");
     }
   };
 
@@ -44,7 +57,7 @@ export default function Sidemenu() {
           </li>
           <li className="nav-item py-1">
             <button
-              className={`nav-link text-white w-100 text-start`}
+              className="nav-link text-white w-100 text-start"
               onClick={() => setShowUploadModal(true)}
             >
               <i className="fas fa-cloud-upload-alt me-2"></i>
