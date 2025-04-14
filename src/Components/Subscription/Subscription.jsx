@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Subscription.css";
 
 export default function Subscription() {
+  const [userID, setUserID] = useState("");
   const accessToken = localStorage.getItem("accessToken");
 
   useEffect(() => {
@@ -17,9 +18,10 @@ export default function Subscription() {
           }
         );
 
-        const { username } = response.data.user;
+        setUserID(response.data.user._id);
+        localStorage.setItem("username", response.data.user.username);
 
-        localStorage.setItem("username", username);
+        console.log(response.data);
       } catch (error) {
         console.error("Error fetching user profile:", error);
       }
@@ -29,7 +31,7 @@ export default function Subscription() {
   }, []);
 
   const handleSelect = async (plan) => {
-    if (!userId) {
+    if (!userID) {
       alert("User ID not found. Please log in again.");
       return;
     }
@@ -37,11 +39,18 @@ export default function Subscription() {
     try {
       const response = await axios.post(
         "http://13.48.37.38:3000/subscription/checkout",
-        { userId: userId, plan: plan }
+        { userId: userID, plan: plan }
       );
 
       console.log("Checkout Success:", response.data);
-      alert(`You selected the ${plan} plan!`);
+
+      const checkoutUrl = response.data.url;
+      if (checkoutUrl) {
+        // Open checkout URL in the same tab
+        window.location.href = checkoutUrl;
+      } else {
+        console.error("Checkout URL not found in response.");
+      }
     } catch (error) {
       console.error("Error:", error);
       alert("Something went wrong. Please try again.");
