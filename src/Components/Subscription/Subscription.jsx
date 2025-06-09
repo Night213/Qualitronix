@@ -90,7 +90,7 @@ export default function Subscription() {
           }[plan];
 
           return (
-            <div key={index} className="col-4">
+            <div key={index} className="col-12 col-md-4">
               <div className="row bg-black p-3 rounded-2xl gap-2 m-1">
                 <div
                   className="rounded-2xl py-2"

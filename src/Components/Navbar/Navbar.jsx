@@ -20,6 +20,9 @@ export default function Navbar() {
     if (path === "/") {
       return "Dashboard";
     }
+    if (path === "/Dashboard") {
+      return "Dashboard";
+    }
     return "Unknown";
   };
 
@@ -37,7 +40,7 @@ export default function Navbar() {
               alt="Qualitronix Logo"
             />
           </button>
-          <button className="navbar-brand">
+          <button className="navbar-brand d-none d-md-block">
             <img
               className="w-56"
               src="https://imgur.com/aM95Zwr.png"
@@ -46,7 +49,7 @@ export default function Navbar() {
           </button>
         </div>
         {/* Dynamically display the current location */}
-        <h2 className="current-Page m-auto">{currentLocation}</h2>
+        <h2 className="current-Page m-auto d-none d-md-block">{currentLocation}</h2>
         <div className="d-flex align-items-center me-4">
           <img
             className="me-2 w-18 rounded-circle"

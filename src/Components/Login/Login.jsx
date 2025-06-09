@@ -1,4 +1,5 @@
 import axios from "axios";
+// eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -15,7 +16,7 @@ export default function Login() {
     setError("");
 
     try {
-      const response = await axios.post("http://13.48.37.38:3000/auth/signin", {
+      const response = await axios.post("http://localhost:3000/auth/signin", {
         email,
         password,
       });
@@ -35,7 +36,7 @@ export default function Login() {
     <>
       <div className="container-fluid">
         <div className="row">
-          <div className="col-6 content-center">
+          <div className="col-12 col-md-6 content-center">
             <div className="row col-7 m-auto BG-Gradient rounded-2xl center">
               <div className="">
                 <img
@@ -114,7 +115,7 @@ export default function Login() {
               </div>
             </div>
           </div>
-          <div className="col-6 panel-background ">
+          <div className="col-6 d-none d-md-block panel-background ">
             <div className="images mb-28">
               <img
                 className="col-2 m-auto"

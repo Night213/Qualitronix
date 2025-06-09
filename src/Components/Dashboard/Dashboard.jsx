@@ -11,6 +11,7 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
+  ResponsiveContainer
 } from "recharts";
 
 export default function Dashboard() {
@@ -57,7 +58,7 @@ export default function Dashboard() {
     <div className="container-fluid mt-5">
       {/* Defect Percentage Section */}
       <div className="row gap-4">
-        <div className="col-6">
+        <div className="col-12 col-md-6">
           <div className="defects-percentage">
             <h3>Defects Percentage</h3>
             <div className="row">
@@ -74,7 +75,7 @@ export default function Dashboard() {
         </div>
 
         {/* Pie Chart for Defective vs Non-Defective PCBs */}
-        <div className="col-4 ms-auto">
+        <div className="col-12 col-md-4 ms-auto">
           <div className="charts">
             <div className="chart-card text-start">
               <h3>Defective vs Non-Defective</h3>
@@ -86,7 +87,7 @@ export default function Dashboard() {
         </div>
 
         {/* Line Chart for Daily Fault Detection */}
-        <div className="col-6">
+        <div className="col-12 col-md-6">
           <div className="charts">
             <div className="chart-card">
               <h3>Daily Batch Fault Detection</h3>
@@ -98,7 +99,7 @@ export default function Dashboard() {
         </div>
 
         {/* Recent Defects Section */}
-        <div className="col-4 ms-auto">
+        <div className="col-12 col-md-4 ms-auto">
           <div className="recent-defects">
             <h3>Recent Defects</h3>
             <div className="bgc text-gold px-5 py-3 rounded-3xl">
@@ -147,20 +148,22 @@ const DefectivePieChart = ({ data }) => (
 
 // Line Chart Component for Daily Fault Detection (Fixed)
 const DailyFaultChart = ({ data }) => (
-  <LineChart width={600} height={250} data={data}>
-    <CartesianGrid strokeDasharray="3 3" />
-    <XAxis dataKey="name" tick={{ fill: "#009669", fontSize: 14 }} />
-    <YAxis domain={[90, 100]} tick={{ fill: "#009669" }} />
-    <Tooltip
-      labelFormatter={(label) => `Day: ${label}`}
-      formatter={(value) => [`${value}%`, "Fault Rate"]}
-    />
-    <Line
-      type="monotone"
-      dataKey="faultRate"
-      stroke="#eda10d"
-      strokeWidth={2}
-      dot={{ r: 4 }}
-    />
-  </LineChart>
+  <ResponsiveContainer width="100%" height={300}>
+    <LineChart data={data}>
+      <CartesianGrid strokeDasharray="3 3" />
+      <XAxis dataKey="name" tick={{ fill: "#009669", fontSize: 14 }} />
+      <YAxis domain={[90, 100]} tick={{ fill: "#009669" }} />
+      <Tooltip
+        labelFormatter={(label) => `Day: ${label}`}
+        formatter={(value) => [`${value}%`, "Fault Rate"]}
+      />
+      <Line
+        type="monotone"
+        dataKey="faultRate"
+        stroke="#eda10d"
+        strokeWidth={2}
+        dot={{ r: 4 }}
+      />
+    </LineChart>
+  </ResponsiveContainer>
 );

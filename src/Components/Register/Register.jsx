@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import "./Register.css";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -12,49 +13,54 @@ export default function Register() {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
+  e.preventDefault();
+  setError("");
 
-    if (password !== confirmPassword) {
-      setError("Passwords do not match.");
-      return;
+  if (password !== confirmPassword) {
+    setError("Passwords do not match.");
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:3000/auth/signUp", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username,
+        email,
+        password,
+        confirmPassword,
+        phone,
+      }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Signup successful:", data);
+      navigate("/Login");
+    } else {
+      const errorData = await response.json();
+
+      // Try to extract the first detailed validation message
+      const detailedMessage = errorData?.error?.[0]?.message;
+
+      setError(detailedMessage || errorData.message || "Signup failed. Please try again.");
+      console.error("Signup failed:", errorData);
     }
+  } catch (error) {
+    setError("An error occurred. Please try again later.");
+    console.error("Error during signup:", error);
+  }
+};
 
-    try {
-      const response = await fetch("http://13.48.37.38:3000/auth/signUp", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username,
-          email,
-          password,
-          confirmPassword,
-          phone,
-        }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log("Signup successful:", data);
-        navigate("/Login");
-      } else {
-        const errorData = await response.json();
-        setError(errorData.message || "Signup failed. Please try again.");
-        console.error("Signup failed:", errorData);
-      }
-    } catch (error) {
-      setError("An error occurred. Please try again later.");
-      console.error("Error during signup:", error);
-    }
-  };
 
   return (
     <>
       <div className="container-fluid">
         <div className="row">
-          <div className="col-6 content-center">
+          <div className="col-12 col-md-6 content-center">
             <div className="row col-7 m-auto BG-Gradient rounded-2xl center">
               <div className="">
                 <img
@@ -73,7 +79,7 @@ export default function Register() {
                   <input
                     className="border-1 rounded-md border-white my-2 p-1"
                     type="text"
-                    placeholder="Full Name"
+                    placeholder="Username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                   />
@@ -155,7 +161,7 @@ export default function Register() {
               </div>
             </div>
           </div>
-          <div className="col-6 panel-background ">
+          <div className="col-6 panel-background d-none d-md-block">
             <div className="images mb-28">
               <img
                 className="col-2 m-auto"

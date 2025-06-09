@@ -1,4 +1,6 @@
 .panel-background {
   height: 100vh;
+  top: 0;
+  bottom: 0;
   background: linear-gradient(to bottom right, #eda10d, #009669);
 }
