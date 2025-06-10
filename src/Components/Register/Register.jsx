@@ -70,21 +70,21 @@ export default function Register() {
                 />
                 <form className="row py-1 w-75 m-auto" onSubmit={handleSubmit}>
                   <input
-                    className="border-1 rounded-md border-white my-2 p-1"
+                    className="border-1 rounded-md border-white my-2 p-1 required"
                     type="email"
                     placeholder="Email Address"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
                   <input
-                    className="border-1 rounded-md border-white my-2 p-1"
+                    className="border-1 rounded-md border-white my-2 p-1 required"
                     type="text"
                     placeholder="Username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                   />
                   <input
-                    className="border-1 rounded-md border-white my-2 p-1 [&::-webkit-inner-spin-button]:appearance-none"
+                    className="border-1 rounded-md border-white my-2 p-1 [&::-webkit-inner-spin-button]:appearance-none required"
                     type="number"
                     inputMode="numeric"
                     placeholder="Phone"
@@ -92,14 +92,14 @@ export default function Register() {
                     onChange={(e) => setPhone(e.target.value)}
                   />
                   <input
-                    className="border-1 rounded-md border-white my-2 p-1"
+                    className="border-1 rounded-md border-white my-2 p-1 required"
                     type="password"
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
                   <input
-                    className="border-1 rounded-md border-white my-2 p-1"
+                    className="border-1 rounded-md border-white my-2 p-1 required"
                     type="password"
                     placeholder="Confirm Password"
                     value={confirmPassword}
@@ -109,6 +109,7 @@ export default function Register() {
                   <button
                     className="mt-2 Button-bg rounded-pill p-1 mb-2"
                     type="submit"
+                    disabled={!email || !username || !phone || !password || !confirmPassword}
                   >
                     Register
                   </button>

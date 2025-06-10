@@ -51,6 +51,7 @@ export default function Login() {
                     placeholder="Email Address"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    required
                   />
                   <input
                     className="border-1 rounded-md border-white my-2 p-1"
@@ -58,11 +59,13 @@ export default function Login() {
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    required
                   />
 
                   <button
                     className="mt-2 Button-bg rounded-pill p-1 mb-2"
                     type="submit"
+                    disabled={!email || !password}
                   >
                     Login
                   </button>
