@@ -10,7 +10,7 @@ export default function Subscription() {
     const fetchUserProfile = async () => {
       try {
         const response = await axios.get(
-          "http://13.48.37.38:3000/user/profile",
+          "http://localhost:3000/user/profile",
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -38,7 +38,7 @@ export default function Subscription() {
 
     try {
       const response = await axios.post(
-        "http://13.48.37.38:3000/subscription/checkout",
+        "http://localhost:3000/subscription/checkout",
         { userId: userID, plan: plan }
       );
 
@@ -73,7 +73,7 @@ export default function Subscription() {
           <hr className="text-light" />
         </div>
         <div className="button-bg col-3 text-center m-auto p-0">
-          <button className="w-100" onClick={() => handleSelect("Diamond")}>
+          <button className="w-100" onClick={() => handleSelect("diamond")}>
             Select
           </button>
         </div>
@@ -82,11 +82,11 @@ export default function Subscription() {
         <h3>Other Plans</h3>
       </div>
       <div className="row">
-        {["Basic", "Silver", "Gold"].map((plan, index) => {
+        {["basic", "silver", "gold"].map((plan, index) => {
           const planDetails = {
-            Basic: { color: "#808080", photos: 10, price: "Free" },
-            Silver: { color: "#C0C0C0", photos: 75, price: "$25" },
-            Gold: { color: "#FFD700", photos: 200, price: "$60" },
+            basic: { color: "#808080", photos: 10, price: "Free" },
+            silver: { color: "#C0C0C0", photos: 75, price: "$25" },
+            gold: { color: "#FFD700", photos: 200, price: "$60" },
           }[plan];
 
           return (

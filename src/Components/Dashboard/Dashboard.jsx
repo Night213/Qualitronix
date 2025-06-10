@@ -11,12 +11,12 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  ResponsiveContainer
+  ResponsiveContainer,
 } from "recharts";
 
 export default function Dashboard() {
   const [summary, setSummary] = useState(null);
-  const [dailyData, setDailyData] = useState([]); // State to store daily fault data
+  const [dailyData, setDailyData] = useState([]);
   const accessToken = localStorage.getItem("accessToken");
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function Dashboard() {
             summaryData.weekly_summary.length > 0
           ) {
             const transformedData = summaryData.weekly_summary.map((entry) => ({
-              name: entry.name, // Corrected field from day -> name
+              name: entry.name,
               faultRate: entry.faultRate,
             }));
             setDailyData(transformedData);
@@ -52,82 +52,80 @@ export default function Dashboard() {
       });
   }, []);
 
-  if (!summary) return <p>Loading...</p>;
+  if (!summary) {
+    return <p className="text-center mt-10 text-gray-500">Loading...</p>;
+  }
 
   return (
-    <div className="container-fluid mt-5">
-      {/* Defect Percentage Section */}
-      <div className="row gap-4">
-        <div className="col-12 col-md-6">
-          <div className="defects-percentage">
-            <h3>Defects Percentage</h3>
-            <div className="row">
-              {summary.defect_percentages.map((defect, index) => (
-                <div className="col-6" key={index}>
-                  <div className="defect-item bg-dark text-gold me-2 my-2 p-3 font-bold flex justify-between rounded-xl">
-                    <span className="text-start">{defect.name}</span>
-                    <span className="text-end">{defect.percentage}%</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+    <div className="w-full px-4 lg:px-8 py-8 space-y-12">
 
-        {/* Pie Chart for Defective vs Non-Defective PCBs */}
-        <div className="col-12 col-md-4 ms-auto">
-          <div className="charts">
-            <div className="chart-card text-start">
-              <h3>Defective vs Non-Defective</h3>
-              <div className="flex justify-center bgc rounded-3xl">
-                <DefectivePieChart data={summary.defective_chart} />
+      {/* === Pair 1: Defect Percentages + Pie Chart === */}
+      <div className="flex flex-col md:flex-row">
+        {/* Left: Defect Percentages */}
+        <section className="rounded-2xl p-6 basis-full md:basis-6/12">
+          <h3 className="text-xl font-semibold mb-4">Defects Percentage</h3>
+          <div className="grid grid-cols-2 gap-4">
+            {summary.defect_percentages.map((defect, index) => (
+              <div
+                key={index}
+                className="bgc text-yellow-400 p-4 rounded-xl flex flex-row flex-wrap justify-between items-center shadow"
+              >
+                <span>{defect.name}</span>
+                <span>{defect.percentage}%</span>
               </div>
-            </div>
+            ))}
           </div>
-        </div>
+        </section>
 
-        {/* Line Chart for Daily Fault Detection */}
-        <div className="col-12 col-md-6">
-          <div className="charts">
-            <div className="chart-card">
-              <h3>Daily Batch Fault Detection</h3>
-              <div className="bgc w-fit pe-3 py-3 rounded-3xl">
-                <DailyFaultChart data={dailyData} />
-              </div>
-            </div>
+        {/* Spacer */}
+        <div className="hidden lg:block basis-2/12" />
+
+        {/* Right: Pie Chart */}
+        <section className="rounded-2xl p-6 basis-full md:basis-4/12 ">
+          <h3 className="text-sm font-semibold mb-4">Defective vs Non-Defective</h3>
+          <div className="bgc shadow flex justify-center rounded-2xl">
+            <DefectivePieChart data={summary.defective_chart} />
           </div>
-        </div>
+        </section>
+      </div>
 
-        {/* Recent Defects Section */}
-        <div className="col-12 col-md-4 ms-auto">
-          <div className="recent-defects">
-            <h3>Recent Defects</h3>
-            <div className="bgc text-gold px-5 py-3 rounded-3xl">
-              {[...summary.recent_defects].reverse().map((pcb, index) => (
-                <div className="row" key={index}>
-                  <div className="col-2 self-center text-5xl">
-                    <i className="fa-solid fa-microchip"></i>
-                  </div>
-                  <div className="col-9 ms-auto">
-                    <div className="pcb-item">
-                      <span className="font-bold">{pcb.pcb_id}</span>
-                      <p>Defects: {pcb.defects.join(", ")}</p>
-                      {/* Uncomment below when timestamp becomes available */}
-                      {/* <p className="text-sm text-muted">Detected: {new Date(pcb.detected_at).toLocaleString()}</p> */}
-                    </div>
-                  </div>
+      {/* === Pair 2: Line Chart + Recent Defects === */}
+      <div className="flex flex-col lg:flex-row">
+        {/* Left: Line Chart */}
+        <section className="rounded-2xl p-6 basis-full md:basis-6/12 ">
+          <h3 className="text-xl font-semibold mb-4">Daily Batch Fault Detection</h3>
+          <div className="bgc shadow ps-1 py-3 pe-3 rounded-2xl w-full h-[300px]">
+            <DailyFaultChart data={dailyData} />
+          </div>
+        </section>
+
+        {/* Spacer */}
+        <div className="hidden lg:block basis-2/12" />
+
+        {/* Right: Recent Defects */}
+        <section className="rounded-2xl p-6 basis-full md:basis-4/12 ">
+          <h3 className="text-xl font-semibold mb-4">Recent Defects</h3>
+          <div className="bgc shadow p-3 rounded-2xl text-yellow-500 space-y-4">
+            {[...summary.recent_defects].reverse().map((pcb, index) => (
+              <div key={index} className="flex gap-4 items-start">
+                <div className="text-3xl">
+                  <i className="fa-solid fa-microchip"></i>
                 </div>
-              ))}
-            </div>
+                <div>
+                  <p className="font-bold">{pcb.pcb_id}</p>
+                  <p className="text-sm">Defects: {pcb.defects.join(", ")}</p>
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
+        </section>
       </div>
     </div>
   );
 }
 
 // Pie Chart Component
-const COLORS = ["#009669", "#eda10d"]; // Good PCBs, Defective PCBs
+const COLORS = ["#009669", "#eda10d"];
 const DefectivePieChart = ({ data }) => (
   <PieChart width={250} height={250}>
     <Pie
@@ -146,9 +144,9 @@ const DefectivePieChart = ({ data }) => (
   </PieChart>
 );
 
-// Line Chart Component for Daily Fault Detection (Fixed)
+// Line Chart Component
 const DailyFaultChart = ({ data }) => (
-  <ResponsiveContainer width="100%" height={300}>
+  <ResponsiveContainer width="100%" height="100%">
     <LineChart data={data}>
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey="name" tick={{ fill: "#009669", fontSize: 14 }} />
