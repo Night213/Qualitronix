@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
+import ReactDOM from "react-dom";
 import axios from "axios";
 import "./Upload.css";
 import { X } from "lucide-react";
@@ -33,7 +34,6 @@ export default function Upload({ onClose }) {
     }
 
     try {
-      console.log("Uploading files...");
       const uploadResponse = await axios.post(
         "http://13.48.37.38:3000/detection/upload",
         formData,
@@ -45,15 +45,9 @@ export default function Upload({ onClose }) {
         }
       );
 
-      console.log("Upload response:", uploadResponse.data);
-
-      // ✅ Show success message
       setMessage("Upload successful! Refreshing...");
-
-      // ✅ Save scroll position or tab
       sessionStorage.setItem("scrollY", window.scrollY);
 
-      // ✅ Close modal after 3 seconds & reload page
       setTimeout(() => {
         onClose();
         window.location.reload();
@@ -66,7 +60,6 @@ export default function Upload({ onClose }) {
     }
   };
 
-  // ✅ Restore scroll position (put this in your main page or tab component)
   useEffect(() => {
     const scrollY = sessionStorage.getItem("scrollY");
     if (scrollY) {
@@ -75,14 +68,14 @@ export default function Upload({ onClose }) {
     }
   }, []);
 
-  return (
+  const modal = (
     <div
       ref={modalRef}
       onClick={closeModal}
-      className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-[9999]"
+      className="upload-modal"
     >
-      <div className="text-white bg-black p-14 rounded-3xl text-center">
-        <button onClick={onClose} className="flex justify-end mb-3">
+      <div className="upload-content">
+        <button onClick={onClose} className="flex justify-end mb-3 ml-auto">
           <X />
         </button>
         <h1 className="mb-4 font-extrabold">Upload Image Batch</h1>
@@ -111,4 +104,6 @@ export default function Upload({ onClose }) {
       </div>
     </div>
   );
+
+  return ReactDOM.createPortal(modal, document.getElementById("modal-root"));
 }

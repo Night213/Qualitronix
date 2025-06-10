@@ -78,10 +78,10 @@ export default function UpdateProfile() {
               {profileData.map(([label, type, name], index) => (
                 <div key={index} className="px-0 col-6">
                   <div className="mx-2 my-2">
-                    <label className="text-gold mb-1" htmlFor={name}>
+                    <label className="text-white text-shadow-lg/30 mb-1" htmlFor={name}>
                       {label}
                     </label>
-                    <li className="m-0 bgg rounded-xl py-1 px-2 text-green border-amber-50 border-1">
+                    <li className="m-0 bg-white rounded-xl py-1 px-2 text-black border-black border-1">
                       <input
                         id={name}
                         type={type}
@@ -98,12 +98,14 @@ export default function UpdateProfile() {
                   </div>
                 </div>
               ))}
-              <button
+              <div className="">
+                <button
                 type="submit"
-                className="bgg text-green font-medium rounded-pill p-1 mx-2 my-3 border-1 border-white"
+                className="bg-white text-black font-medium rounded-pill p-1 me-2 my-3 border-1 border-white w-100"
               >
                 Submit
               </button>
+              </div>
             </ul>
           </form>
           {error && <p className="text-red-500">{error}</p>}

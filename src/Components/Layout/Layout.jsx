@@ -29,20 +29,22 @@ export default function Layout() {
     };
 
     fetchUserProfile();
-  }, []);
+  });
   return (
-    <>
+    <div className="flex flex-col h-screen">
       <Navbar />
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-2 d-none d-md-block menu p-0">
-            <Sidemenu />
-          </div>
-          <div className="col-12 col-md-10 bg23 border-t-2 border-dark">
-            <Outlet />
-          </div>
+      <div className="flex flex-row flex-grow">
+        {/* Side menu hidden on small screens */}
+        <div className="hidden md:block basis-2/12 menu pe-2">
+          <Sidemenu />
+        </div>
+
+        {/* Main content */}
+        <div className="basis-10/12 flex-grow px-2 bg23 border-t-2 border-dark">
+          <Outlet />
         </div>
       </div>
-    </>
+    </div>
   );
+
 }

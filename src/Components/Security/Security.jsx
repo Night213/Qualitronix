@@ -90,10 +90,10 @@ export default function Security() {
               {profileData.map(([label, type, name], index) => (
                 <div key={index} className="px-0 row">
                   <div className="mx-2 my-2">
-                    <label className="text-gold mb-1" htmlFor={name}>
+                    <label className="text-white mb-1" htmlFor={name}>
                       {label}
                     </label>
-                    <li className="m-0 bgg rounded-xl py-1 px-2 text-green border-amber-50 border-1">
+                    <li className="m-0 bg-white rounded-xl py-1 px-2 text-black border-black border-1">
                       <input
                         id={name}
                         type={type}
@@ -112,7 +112,7 @@ export default function Security() {
               ))}
               <button
                 type="submit"
-                className="bgg w-100 text-green font-medium rounded-pill p-1 mx-2 my-3 border-1 border-white"
+                className="bg-white text-black w-100 font-medium rounded-pill p-1 mx-2 my-3 border-1 border-white"
               >
                 Submit
               </button>

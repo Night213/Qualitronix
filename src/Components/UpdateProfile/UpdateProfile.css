@@ -27,3 +27,9 @@ input:-webkit-autofill {
 input:autofill {
   box-shadow: 0 0 0px 1000px #000 inset !important;
 }
+
+input:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: inherit; /* Or a specific color if you want */
+}

@@ -14,7 +14,6 @@ import ForgotPassword from "./Components/ForgotPassword/ForgotPassword";
 import ResetPassword from "./Components/ResetPassword/ResetPassword";
 import Error404 from "./Components/Error404/Error404";
 import UpdateProfile from "./Components/UpdateProfile/UpdateProfile";
-import Preferences from "./Components/Preferences/Preferences";
 import Security from "./Components/Security/Security";
 import PaymentSuccess from "./Components/PaymentSuccess/PaymentSuccess";
 
@@ -142,7 +141,6 @@ function App() {
           ),
           children: [
             { path: "Update-Profile", element: <UpdateProfile /> },
-            { path: "Preferences", element: <Preferences /> },
             { path: "Security", element: <Security /> },
           ],
         },
